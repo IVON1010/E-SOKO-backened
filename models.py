@@ -2,10 +2,14 @@ from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 
+# initialize metadatafrom sqlalchemy import MetaData
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_serializer import SerializerMixin
+
 # initialize metadata
 metadata = MetaData()
 
-db = SQLAlchemy(metadata=metadata)
+db = SQLAlchemy(metadata=metadata)  
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
@@ -20,6 +24,7 @@ class User(db.Model, SerializerMixin):
     products = db.relationship('Product', back_populates='user')
 
     serialize_rules = ('-products.user', '-orders.user',)
+    serialize_only = ('id', 'name', 'email', 'password', 'address')
 
 class Product(db.Model, SerializerMixin):
     __tablename__= 'products'
@@ -35,6 +40,7 @@ class Product(db.Model, SerializerMixin):
     cart = db.relationship('Cart', back_populates='products')
 
     serialize_rules = ('-user.products', 'cart.products',)
+    serialize_only = ('id', 'name', 'description', 'price', 'image', 'category')
 
 class Order(db.Model, SerializerMixin):
     __tablename__= 'orders'
@@ -47,6 +53,7 @@ class Order(db.Model, SerializerMixin):
     orderitems = db.relationship('OrderItem', back_populates='order')
 
     serialize_rules = ('-user.orders',)
+    serialize_only = ('id', 'amount', 'status')
 
 class OrderItem(db.Model, SerializerMixin):
     __tablename__= "orderitems"
@@ -58,6 +65,7 @@ class OrderItem(db.Model, SerializerMixin):
     order = db.relationship('Order', back_populates='oderitems')
 
     serialize_rules = ('-order.orderitems',)
+    serialize_only = ('id', 'quantity', 'order', 'product')
 
 class Cart(db.Model, SerializerMixin):
     __tablename__= 'carts'
