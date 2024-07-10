@@ -5,10 +5,20 @@ name = "pypi"
 
 [packages]
 flask = "*"
+<<<<<<< HEAD
+flask-restful = "*"
+sqlalchemy = "*"
+python-multipart = "*"
+uvicorn = "*"
+fastapi = "*"
+sqlalchemy-serializer = "*"
+flask-migrate = "*"
+=======
 sqlalchemy = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
 sqlalchemy-serializer = "*"
+>>>>>>> d0d49fb5e2e78ce8b0db4d34414d8be9e961a14d
 
 [dev-packages]
 
