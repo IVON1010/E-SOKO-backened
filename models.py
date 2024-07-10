@@ -75,4 +75,4 @@ class Cart(db.Model, SerializerMixin):
 
     products = db.relationship('Product', back_populates='cart')
 
-    serialize_rules = ('-products.cart',)\
+    serialize_rules = ('-products.cart',)
