@@ -34,7 +34,7 @@ class Product(db.Model, SerializerMixin):
     price = db.Column(db.Integer, nullable=False)
     category = db.Column(db.Text, nullable=False)
     image = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     user = db.relationship('User', back_populates='products')
     cart = db.relationship('Cart', back_populates='products')
