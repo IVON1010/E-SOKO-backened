@@ -72,6 +72,6 @@ class Cart(db.Model, SerializerMixin):
     quantity = db.Column(db.Integer, nullable=False)
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'))
 
-    products = db.relationship('Product', back_populates='carts')
+    products = db.relationship('Product', back_populates='cart')
 
     serialize_rules = ('-products.cart',)
