@@ -16,8 +16,8 @@ class User(db.Model, SerializerMixin):
     address = db.Column(db.String, nullable=False)
     created_at = db.Column(db.TIMESTAMP)
 
-    orders = db.relationship('Order', back_populates='users')
-    products = db.relationship('Product', back_populates='users')
+    orders = db.relationship('Order', back_populates='user')
+    products = db.relationship('Product', back_populates='user')
 
     serialize_rules = ('-products.user', '-orders.user',)
     serialize_only = ('id', 'name', 'email', 'password', 'address')
