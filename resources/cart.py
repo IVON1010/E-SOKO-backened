@@ -15,6 +15,7 @@ class CartResource(Resource):
         if id == None:
             cart = Cart.query.all()
 
+            
             price = ''
 
 
