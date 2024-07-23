@@ -1,6 +1,10 @@
 from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
+from flask_bcrypt import check_password_hash
+from flask_bcrypt import check_password_hash
+
 
 # initialize metadata
 metadata = MetaData()
@@ -14,13 +18,31 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
+    role = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.TIMESTAMP)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+            'address': self.address,
+            'role': self.role
+        }
 
     orders = db.relationship('Order', back_populates='user')
     products = db.relationship('Product', back_populates='user')
 
-    serialize_rules = ('-products.user', '-orders.user',)
+    serialize_rules = ('-products.user', '-orders.user', 'password',)
     serialize_only = ('id', 'name', 'email', 'password', 'address')
+
+    cart_products = association_proxy('cart', 'products', creator=lambda product: CartProduct(product=product))
+
+    def check_password(self, plain_password):
+        return check_password_hash(self.password, plain_password)
 
 class Product(db.Model, SerializerMixin):
     __tablename__= 'products'
@@ -51,6 +73,8 @@ class Order(db.Model, SerializerMixin):
 
     serialize_rules = ('-user.orders',)
     serialize_only = ('id', 'amount', 'status')
+
+    order_products = association_proxy('products', 'product', creator=lambda product: OrderProduct(product=product))
 
 
 # class OrderItem(db.Model, SerializerMixin):

@@ -14,7 +14,10 @@ class CartResource(Resource):
     def get(self, id=None):
         if id == None:
             cart = Cart.query.all()
-            price = 
+
+            
+            price = ''
+
 
             for cart in cart:
                 price.append(cart.to_dict())
